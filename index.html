@@ -21,7 +21,7 @@
   .prov:hover { fill:rgba(56,110,170,.55); }
   .prov.hl { fill:rgba(14,116,144,.55); stroke:#22d3ee; stroke-width:1.8; stroke-opacity:1; }
   /* 聚焦区域高亮 */
-  .focus-region { fill:none; stroke:#f59e0b; stroke-width:2.4; stroke-dasharray:8 5; filter:drop-shadow(0 0 6px rgba(245,158,11,.7)); }
+  .focus-region { fill:none; stroke:#f59e0b; stroke-width:2.4; stroke-dasharray:8 5; }
   /* 标记 */
   .mark { cursor:pointer; }
   .mark circle.core { transition:r .2s; }
@@ -153,7 +153,8 @@ function addMark(lng, lat, color, name, kind, big){
   const [x,y] = pt(lng, lat);
   const g = el('g', { class:'mark' }, gMark);
   if (big) el('circle', { cx:x, cy:y, r:10, fill:'none', stroke:color, 'stroke-opacity':.5, 'stroke-width':1.5 }, g);
-  el('circle', { class:'core', cx:x, cy:y, r:big?5.5:3.6, fill:color, style:`filter:drop-shadow(0 0 4px ${color})` }, g);
+  el('circle', { cx:x, cy:y, r:big?8.5:6, fill:color, 'fill-opacity':.18 }, g);
+  el('circle', { class:'core', cx:x, cy:y, r:big?5.5:3.6, fill:color, stroke:'#fff', 'stroke-opacity':.35, 'stroke-width':.6 }, g);
   el('text', { x:x+9, y:y+4, fill: big?'#e0f2fe':'#b8cad9', 'font-size': big?15:12, 'paint-order':'stroke', stroke:'#06101c', 'stroke-width':3 }, g).textContent = name;
   g.addEventListener('click', ev => { ev.stopPropagation(); showCard(name, kind, lng, lat); });
 }
@@ -161,7 +162,7 @@ FOOTPRINT.forEach((c,i) => addMark(c[1], c[2], '#22d3ee', c[0], '足迹城市', 
 CAPITALS.forEach(c => addMark(c[2], c[3], '#f59e0b', c[0], '省会/直辖市', false));
 TOURIST.forEach(c => addMark(c[1], c[2], '#c084fc', c[0], '热门旅游城市', false));
 const rd = ROUTE.map(i => pt(FOOTPRINT[i][1], FOOTPRINT[i][2]).map(v=>v.toFixed(1)).join(',')).join(' ');
-el('polyline', { points:rd, fill:'none', stroke:'#22d3ee', 'stroke-opacity':.75, 'stroke-width':1.6, 'stroke-dasharray':'7 5', style:'filter:drop-shadow(0 0 4px rgba(34,211,238,.6))' }, gRoute);
+el('polyline', { points:rd, fill:'none', stroke:'#22d3ee', 'stroke-opacity':.75, 'stroke-width':1.6, 'stroke-dasharray':'7 5' }, gRoute);
 
 function showCard(name, kind, lng, lat){
   const card = document.getElementById('card');
